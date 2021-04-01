@@ -17,6 +17,45 @@ const textureLoader = new THREE.TextureLoader();
 // Fonts
 const fontLoader = new THREE.FontLoader();
 
+// My galaxies
+const galaxies = {
+  milkyWay: {
+    count: 46800,
+    size: 0.02,
+    radius: 5.17,
+    branches: 4,
+    spin: 1.2, // per distorsione dei branches della galassia
+    randomness: 0.4,
+    randomnessPower: 3.9,
+    insideColor: "#657808",
+    outsideColor: "#1b50d7",
+  },
+  andromeda: {
+    count: 34500,
+    size: 0.02,
+    radius: 6.69,
+    branches: 4,
+    spin: 1.2,
+    randomness: 0.45,
+    randomnessPower: 4.2,
+    insideColor: "#f04b1a",
+    outsideColor: "#985616",
+  },
+  backward: {
+    count: 40500,
+    size: 0.024,
+    radius: 5.82,
+    branches: 5,
+    spin: -2.2,
+    randomness: 0.73,
+    randomnessPower: 4.6,
+    insideColor: "#d7d261",
+    outsideColor: "#785113",
+  },
+};
+
+console.log(galaxies.backward);
+
 /*
  * Galaxy
  */
@@ -37,7 +76,7 @@ let material = null;
 let points = null;
 
 // Core function to generate galaxy
-const generateGalaxy = () => {
+const generateGalaxy = (galaxy) => {
   if (points !== null) {
     // destroy old galaxy
     geometry.dispose();
@@ -45,44 +84,34 @@ const generateGalaxy = () => {
     scene.remove(points); // of course you cant dispose (liberare la memoria) di meshes e points
   }
 
-  /* // Cursor
-const cursor = {
-  x: 0,
-  y: 0,
-};
-window.addEventListener("mousemove", (evt) => {
-  cursor.x = evt.clientX / sizes.width - 0.5;
-  cursor.y = -(evt.clientY / sizes.height - 0.5);
-}); */
-
   // Geometry
   geometry = new THREE.BufferGeometry();
 
-  const positions = new Float32Array(parameters.count * 3);
-  const colors = new Float32Array(parameters.count * 3);
+  const positions = new Float32Array(galaxy.count * 3);
+  const colors = new Float32Array(galaxy.count * 3);
 
-  const colorInside = new THREE.Color(parameters.insideColor);
-  const colorOutside = new THREE.Color(parameters.outsideColor);
+  const colorInside = new THREE.Color(galaxy.insideColor);
+  const colorOutside = new THREE.Color(galaxy.outsideColor);
   // Now we need to mix inside and outside depending on how far they are from the center -> we use color.lept() di three js
 
-  for (let i = 0; i < parameters.count; i++) {
+  for (let i = 0; i < galaxy.count; i++) {
     const i3 = i * 3;
     //positioning
-    const radius = Math.random() * parameters.radius;
-    const spinAngle = radius * parameters.spin;
-    const brancheModule = i % parameters.branches; // modulo matematico
-    const formattedBranch = brancheModule / parameters.branches; // semplicemente dividiamo per 3 per avere una formattazione più leggibile (invece di avere 0,1,2,0,1,2etc.. avremo 0,0.33,0.66)
+    const radius = Math.random() * galaxy.radius;
+    const spinAngle = radius * galaxy.spin;
+    const brancheModule = i % galaxy.branches; // modulo matematico
+    const formattedBranch = brancheModule / galaxy.branches; // semplicemente dividiamo per 3 per avere una formattazione più leggibile (invece di avere 0,1,2,0,1,2etc.. avremo 0,0.33,0.66)
     const branchAngle = formattedBranch * Math.PI * 2; // per avere i valori degli angoli dei rispettivi branches delle nostre galassie. 2PI è uguale al valore del cerchio. Un PI è un semicerchio
 
     // randomness
     const randomX =
-      Math.pow(Math.random(), parameters.randomnessPower) *
+      Math.pow(Math.random(), galaxy.randomnessPower) *
       (Math.random() < 0.5 ? 1 : -1);
     const randomY =
-      Math.pow(Math.random(), parameters.randomnessPower) *
+      Math.pow(Math.random(), galaxy.randomnessPower) *
       (Math.random() < 0.5 ? 1 : -1);
     const randomZ =
-      Math.pow(Math.random(), parameters.randomnessPower) *
+      Math.pow(Math.random(), galaxy.randomnessPower) *
       (Math.random() < 0.5 ? 1 : -1);
 
     positions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX; // posizioniamo lungo i due assi
@@ -91,7 +120,7 @@ window.addEventListener("mousemove", (evt) => {
 
     // Color
     const mixedColor = colorInside.clone();
-    mixedColor.lerp(colorOutside, radius / parameters.radius);
+    mixedColor.lerp(colorOutside, radius / galaxy.radius);
     colors[i3] = mixedColor.r;
     colors[i3 + 1] = mixedColor.g;
     colors[i3 + 2] = mixedColor.b;
@@ -101,7 +130,7 @@ window.addEventListener("mousemove", (evt) => {
 
   // Material
   material = new THREE.PointsMaterial({
-    size: parameters.size,
+    size: galaxy.size,
     sizeAttenuation: true,
     depthWrite: false,
     blending: THREE.AdditiveBlending,
@@ -112,14 +141,14 @@ window.addEventListener("mousemove", (evt) => {
   points = new THREE.Points(geometry, material);
   scene.add(points);
 };
-generateGalaxy();
+generateGalaxy(galaxies.backward);
 
 /* gui
   .add(parameters, "count")
   .min(100)
   .max(100000)
   .step(100)
-  .onFinishChange(generateGalaxy);
+  .onFinishChange(generateGalaxy(galaxies.backward));
 gui
   .add(parameters, "size")
   .min(0.001)
@@ -185,26 +214,27 @@ window.addEventListener("resize", () => {
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
-  75,
+  80,
   sizes.width / sizes.height,
   0.1,
-  130
+  230
 );
 
-camera.position.set(5, 6, 3);
+camera.position.set(7, 5.7, 2.25);
 scene.add(camera);
 const renderer = new THREE.WebGLRenderer({
   canvas,
 });
 
 // axes
-scene.add(new THREE.AxesHelper(20));
+// scene.add(new THREE.AxesHelper(20));
 
 gui.add(camera.position, "z").min(0).max(10).step(0.001);
 gui.add(camera.position, "y").min(0).max(10).step(0.001);
 gui.add(camera.position, "x").min(-10).max(10).step(0.001);
 const cameraVector = new THREE.Vector3();
 console.log(cameraVector);
+cameraVector.set(0.7, -1.37, 4.2);
 gui.add(cameraVector, "y").min(-10).max(10).step(0.001);
 gui.add(cameraVector, "x").min(-10).max(10).step(0.001);
 gui.add(cameraVector, "z").min(-10).max(10).step(0.001);
@@ -222,7 +252,10 @@ const tick = () => {
   camera.lookAt(cameraVector);
   const elapsedTime = clock.getElapsedTime();
 
+  // camera.position.x = Math.sin(elapsedTime) * 5;
+  // camera.position.x = Math.cos(elapsedTime) * 10;
   // controls.update();
+  scene.children[0].rotation.y += 0.005;
   // Render
   renderer.render(scene, camera);
   window.requestAnimationFrame(tick);
