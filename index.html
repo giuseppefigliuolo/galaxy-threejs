@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div class="landing-page">
+    <div class="text-section">
       <h1 class="of-hidden">
         <span class="mono inline-bl"
           >benvenuti a bordo di <b class="accent">AnAcreon</b></span
@@ -40,9 +40,27 @@
           remaining essentially unchanged.
         </span>
       </p>
-      <button class="button hidden">Accendiamo i motori</button>
+      <button class="button">Accendiamo i motori</button>
     </div>
-    <canvas class="webgl"></canvas>
+    <div class="countdown mono invisible tr-opacity"><span>5</span></div>
+    <div class="galaxy-description invisible tr-opacity">
+      <h1 class="mono accent">viA lAtteA</h1>
+      <p>
+        La Via Lattea, a cui appartiene il nostro sistema solare, è "la
+        galassia" per eccellenza: il nome infatti deriva dal greco galaxias
+        (correlato alla parola latte) utilizzato in epoca greca per designarla.
+        In base agli studi più recenti pare che, da un punto di vista
+        strettamente morfologico, sia una galassia a spirale barrata, ovvero una
+        galassia composta da un nucleo attraversato da una struttura a forma di
+        barra da cui si dipartono i bracci di spirale che seguono un andamento
+        logaritmico; insieme alla Galassia di Andromeda, è il membro principale
+        del Gruppo Locale, un gruppo di galassie comprendente anche la Galassia
+        del Triangolo ed una cinquantina di galassie minori, principalmente
+        galassie nane.
+      </p>
+      <button class="button mono">continua itinerario</button>
+    </div>
+    <canvas class="webgl invisible"></canvas>
     <script src="three.js"></script>
     <script src="main.js"></script>
   </body>

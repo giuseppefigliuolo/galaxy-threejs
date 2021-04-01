@@ -141,7 +141,7 @@ const generateGalaxy = (galaxy) => {
   points = new THREE.Points(geometry, material);
   scene.add(points);
 };
-generateGalaxy(galaxies.backward);
+generateGalaxy(galaxies.milkyWay);
 
 /* gui
   .add(parameters, "count")
