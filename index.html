@@ -21,30 +21,29 @@
       integrity="sha512-LF8ZB1iTwi4Qvkm4pekHG4a437Y9Af5ZuwbnW4GTbAWQeR2E4KW8WF+xH8b9psevV7wIlDMx1MH9YfPqgKhA/Q=="
       crossorigin="anonymous"
     ></script>
-    <style>
-      html {
-        overflow: hidden;
-      }
-
-      body {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        color: white;
-      }
-
-      .webgl {
-        position: fixed;
-        top: 0;
-        left: 0;
-        outline: none;
-        z-index: -1;
-      }
-    </style>
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <h1>CIAOOOO</h1>
+    <div class="landing-page">
+      <h1 class="of-hidden">
+        <span class="mono inline-bl"
+          >benvenuti a bordo di <b class="accent">AnAcreon</b></span
+        >
+      </h1>
+      <p class="subheader of-hidden">
+        <span class="inline-bl">
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged.
+        </span>
+      </p>
+      <button class="button hidden">Accendiamo i motori</button>
+    </div>
     <canvas class="webgl"></canvas>
-    <script src="script.js"></script>
+    <script src="three.js"></script>
+    <script src="main.js"></script>
   </body>
 </html>

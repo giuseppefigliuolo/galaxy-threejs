@@ -1,0 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,200;0,300;0,600;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap");
+html {
+  overflow: hidden;
+  font-family: "Roboto Mono", monospace;
+}
+
+.mono {
+  font-family: "Major Mono Display", monospace;
+}
+
+.inline-bl {
+  display: inline-block;
+}
+
+.accent {
+  color: #1ddab1;
+}
+
+.of-hidden {
+  overflow: hidden;
+}
+
+.hidden {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+.button {
+  transition: opacity 1.5s ease-in;
+  visibility: visible;
+  opacity: 1;
+  margin-top: 3rem;
+  padding: 0.8rem 1.4rem;
+  background: rgba(255, 255, 255, 0);
+  color: white;
+  border-radius: 5px;
+  font-size: 1.08rem;
+  font-family: "Major Mono Display", monospace;
+  border: solid 2.5px #1ddab1;
+  width: fit-content;
+  align-self: center;
+  cursor: pointer;
+  transition: transform 0.2s ease-in;
+}
+
+.button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.button:hover {
+  transform: scale(1.03);
+  color: #1ddab1;
+}
+
+.subheader {
+  margin: 2rem 0;
+  width: 50%;
+  font-weight: 200;
+  align-self: center;
+}
+
+.landing-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+  padding-top: 10rem;
+  font-size: 2.4rem;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: white;
+  background-color: black;
+}
+
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+  z-index: -1;
+  opacity: 0;
+}
+/*# sourceMappingURL=style.css.map */
