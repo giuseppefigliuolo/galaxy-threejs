@@ -1,0 +1,231 @@
+// Canvas
+const canvas = document.querySelector(".webgl");
+
+// debug ui
+const gui = new dat.GUI({ closed: true });
+// gui.domElement.classList.add("yoyooyoyooy");
+console.log(gui);
+
+//scene
+const scene = new THREE.Scene();
+
+// const OrbitControls = THREE.OrbitControls;
+
+// Texture
+const textureLoader = new THREE.TextureLoader();
+
+// Fonts
+const fontLoader = new THREE.FontLoader();
+
+/*
+ * Galaxy
+ */
+const parameters = {
+  count: 34800,
+  size: 0.02,
+  radius: 5,
+  branches: 3, // how many branches we want?
+  spin: 1, // per distorsione dei branches della galassia
+  randomness: 0.2,
+  randomnessPower: 3,
+  insideColor: "#ff6030",
+  outsideColor: "#1b3984",
+};
+
+let geometry = null;
+let material = null;
+let points = null;
+
+// Core function to generate galaxy
+const generateGalaxy = () => {
+  if (points !== null) {
+    // destroy old galaxy
+    geometry.dispose();
+    material.dispose();
+    scene.remove(points); // of course you cant dispose (liberare la memoria) di meshes e points
+  }
+
+  /* // Cursor
+const cursor = {
+  x: 0,
+  y: 0,
+};
+window.addEventListener("mousemove", (evt) => {
+  cursor.x = evt.clientX / sizes.width - 0.5;
+  cursor.y = -(evt.clientY / sizes.height - 0.5);
+}); */
+
+  // Geometry
+  geometry = new THREE.BufferGeometry();
+
+  const positions = new Float32Array(parameters.count * 3);
+  const colors = new Float32Array(parameters.count * 3);
+
+  const colorInside = new THREE.Color(parameters.insideColor);
+  const colorOutside = new THREE.Color(parameters.outsideColor);
+  // Now we need to mix inside and outside depending on how far they are from the center -> we use color.lept() di three js
+
+  for (let i = 0; i < parameters.count; i++) {
+    const i3 = i * 3;
+    //positioning
+    const radius = Math.random() * parameters.radius;
+    const spinAngle = radius * parameters.spin;
+    const brancheModule = i % parameters.branches; // modulo matematico
+    const formattedBranch = brancheModule / parameters.branches; // semplicemente dividiamo per 3 per avere una formattazione più leggibile (invece di avere 0,1,2,0,1,2etc.. avremo 0,0.33,0.66)
+    const branchAngle = formattedBranch * Math.PI * 2; // per avere i valori degli angoli dei rispettivi branches delle nostre galassie. 2PI è uguale al valore del cerchio. Un PI è un semicerchio
+
+    // randomness
+    const randomX =
+      Math.pow(Math.random(), parameters.randomnessPower) *
+      (Math.random() < 0.5 ? 1 : -1);
+    const randomY =
+      Math.pow(Math.random(), parameters.randomnessPower) *
+      (Math.random() < 0.5 ? 1 : -1);
+    const randomZ =
+      Math.pow(Math.random(), parameters.randomnessPower) *
+      (Math.random() < 0.5 ? 1 : -1);
+
+    positions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX; // posizioniamo lungo i due assi
+    positions[i3 + 1] = randomY;
+    positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
+
+    // Color
+    const mixedColor = colorInside.clone();
+    mixedColor.lerp(colorOutside, radius / parameters.radius);
+    colors[i3] = mixedColor.r;
+    colors[i3 + 1] = mixedColor.g;
+    colors[i3 + 2] = mixedColor.b;
+  }
+  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+  // Material
+  material = new THREE.PointsMaterial({
+    size: parameters.size,
+    sizeAttenuation: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    vertexColors: true, // to use the colors we provided -> we need a Float32Array for colors
+  });
+
+  // Points
+  points = new THREE.Points(geometry, material);
+  scene.add(points);
+};
+generateGalaxy();
+
+/* gui
+  .add(parameters, "count")
+  .min(100)
+  .max(100000)
+  .step(100)
+  .onFinishChange(generateGalaxy);
+gui
+  .add(parameters, "size")
+  .min(0.001)
+  .max(0.1)
+  .step(0.001)
+  .onFinishChange(generateGalaxy);
+
+gui
+  .add(parameters, "radius")
+  .min(0.01)
+  .max(20)
+  .step(0.01)
+  .onFinishChange(generateGalaxy);
+
+gui
+  .add(parameters, "branches")
+  .min(2)
+  .max(20)
+  .step(1)
+  .onFinishChange(generateGalaxy);
+
+gui
+  .add(parameters, "spin")
+  .min(-5)
+  .max(5)
+  .step(0.001)
+  .onFinishChange(generateGalaxy);
+
+gui
+  .add(parameters, "randomness")
+  .min(0)
+  .max(2)
+  .step(0.001)
+  .onFinishChange(generateGalaxy);
+
+gui
+  .add(parameters, "randomnessPower")
+  .min(1)
+  .max(10)
+  .step(0.001)
+  .onFinishChange(generateGalaxy);
+
+gui.addColor(parameters, "insideColor").onFinishChange(generateGalaxy);
+gui.addColor(parameters, "outsideColor").onFinishChange(generateGalaxy); */
+
+// sizes
+const sizes = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
+
+window.addEventListener("resize", () => {
+  sizes.width = window.innerWidth;
+  sizes.height = window.innerHeight;
+  camera.aspect = sizes.width / sizes.height;
+  //when changing properties like aspect, we need to call camera.updateProjectionMatrix()
+  camera.updateProjectionMatrix();
+  //update renderer
+  renderer.setSize(sizes.width, sizes.height);
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
+// Camera
+const camera = new THREE.PerspectiveCamera(
+  75,
+  sizes.width / sizes.height,
+  0.1,
+  130
+);
+
+camera.position.set(5, 6, 3);
+scene.add(camera);
+const renderer = new THREE.WebGLRenderer({
+  canvas,
+});
+
+// axes
+scene.add(new THREE.AxesHelper(20));
+
+gui.add(camera.position, "z").min(0).max(10).step(0.001);
+gui.add(camera.position, "y").min(0).max(10).step(0.001);
+gui.add(camera.position, "x").min(-10).max(10).step(0.001);
+const cameraVector = new THREE.Vector3();
+console.log(cameraVector);
+gui.add(cameraVector, "y").min(-10).max(10).step(0.001);
+gui.add(cameraVector, "x").min(-10).max(10).step(0.001);
+gui.add(cameraVector, "z").min(-10).max(10).step(0.001);
+
+// Controls
+// const controls = new OrbitControls(camera, canvas);
+// controls.enableDamping = true;
+
+renderer.setSize(sizes.width, sizes.height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+const clock = new THREE.Clock();
+
+const tick = () => {
+  camera.lookAt(cameraVector);
+  const elapsedTime = clock.getElapsedTime();
+
+  // controls.update();
+  // Render
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(tick);
+};
+
+tick();
