@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WEBfGL -> Galaxy trip</title>
+    <title>Anacreon 🚀</title>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js"
       integrity="sha512-n8IpKWzDnBOcBhRlHirMZOUvEq2bLRMuJGjuVqbzUJwtTsgwOgK5aS0c1JA647XWYfqvXve8k3PtZdzpipFjgg=="
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div class="text-section">
+    <div class="text-section hidden">
       <h1 class="of-hidden">
         <span class="mono inline-bl"
           >benvenuti a bordo di <b class="accent">AnAcreon</b></span
@@ -43,7 +43,7 @@
       <button class="button">Accendiamo i motori</button>
     </div>
     <div class="countdown mono invisible tr-opacity"><span>5</span></div>
-    <div class="galaxy-description invisible tr-opacity">
+    <div class="galaxy-description tr-opacity">
       <h1 class="mono accent">viA lAtteA</h1>
       <p>
         La Via Lattea, a cui appartiene il nostro sistema solare, è "la
@@ -58,9 +58,9 @@
         del Triangolo ed una cinquantina di galassie minori, principalmente
         galassie nane.
       </p>
-      <button class="button mono">continua itinerario</button>
+      <button id="next-galaxy" class="button mono">continua itinerario</button>
     </div>
-    <canvas class="webgl invisible"></canvas>
+    <canvas class="webgl"></canvas>
     <script src="three.js"></script>
     <script src="main.js"></script>
   </body>
