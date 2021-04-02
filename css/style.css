@@ -108,6 +108,10 @@ body {
   opacity: 0;
 }
 
+.visible {
+  opacity: 1 !important;
+}
+
 .d-none {
   display: none;
 }
@@ -133,5 +137,20 @@ body {
 
 .galaxy-description .button {
   margin-top: 2rem;
+}
+
+.top-55 {
+  top: 55% !important;
+}
+
+.dg.ac {
+  transition: opacity 0.8s ease-in;
+  opacity: 0;
+}
+
+.dg.ac .dg {
+  position: fixed !important;
+  top: 0 !important;
+  left: 50px !important;
 }
 /*# sourceMappingURL=style.css.map */

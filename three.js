@@ -2,9 +2,7 @@
 const canvas = document.querySelector(".webgl");
 
 // debug ui
-const gui = new dat.GUI({ closed: true });
-// gui.domElement.classList.add("yoyooyoyooy");
-console.log(gui);
+const gui = new dat.GUI({ closed: false });
 
 //scene
 const scene = new THREE.Scene();
@@ -52,9 +50,19 @@ const galaxies = {
     insideColor: "#d7d261",
     outsideColor: "#785113",
   },
+  yourOwn: {
+    count: 40500,
+    size: 0.024,
+    radius: 5.82,
+    branches: 5,
+    spin: -2.2,
+    randomness: 0.73,
+    randomnessPower: 4.6,
+    insideColor: "#d7d261",
+    outsideColor: "#785113",
+  },
 };
-
-console.log(galaxies.backward);
+const galBtn = document.querySelector("#next-galaxy");
 
 /*
  * Galaxy
@@ -141,58 +149,75 @@ const generateGalaxy = (galaxy) => {
   points = new THREE.Points(geometry, material);
   scene.add(points);
 };
-generateGalaxy(galaxies.milkyWay);
 
-/* gui
-  .add(parameters, "count")
+gui
+  .add(galaxies.yourOwn, "count")
   .min(100)
   .max(100000)
   .step(100)
-  .onFinishChange(generateGalaxy(galaxies.backward));
+  .onFinishChange(() => {
+    generateGalaxy(galaxies.yourOwn);
+  });
 gui
-  .add(parameters, "size")
+  .add(galaxies.yourOwn, "size")
   .min(0.001)
   .max(0.1)
   .step(0.001)
-  .onFinishChange(generateGalaxy);
+  .onFinishChange(() => {
+    generateGalaxy(galaxies.yourOwn);
+  });
 
 gui
-  .add(parameters, "radius")
+  .add(galaxies.yourOwn, "radius")
   .min(0.01)
   .max(20)
   .step(0.01)
-  .onFinishChange(generateGalaxy);
+  .onFinishChange(() => {
+    generateGalaxy(galaxies.yourOwn);
+  });
 
 gui
-  .add(parameters, "branches")
+  .add(galaxies.yourOwn, "branches")
   .min(2)
   .max(20)
   .step(1)
-  .onFinishChange(generateGalaxy);
+  .onFinishChange(() => {
+    generateGalaxy(galaxies.yourOwn);
+  });
 
 gui
-  .add(parameters, "spin")
+  .add(galaxies.yourOwn, "spin")
   .min(-5)
   .max(5)
   .step(0.001)
-  .onFinishChange(generateGalaxy);
+  .onFinishChange(() => {
+    generateGalaxy(galaxies.yourOwn);
+  });
 
 gui
-  .add(parameters, "randomness")
+  .add(galaxies.yourOwn, "randomness")
   .min(0)
   .max(2)
   .step(0.001)
-  .onFinishChange(generateGalaxy);
+  .onFinishChange(() => {
+    generateGalaxy(galaxies.yourOwn);
+  });
 
 gui
-  .add(parameters, "randomnessPower")
+  .add(galaxies.yourOwn, "randomnessPower")
   .min(1)
   .max(10)
   .step(0.001)
-  .onFinishChange(generateGalaxy);
+  .onFinishChange(() => {
+    generateGalaxy(galaxies.yourOwn);
+  });
 
-gui.addColor(parameters, "insideColor").onFinishChange(generateGalaxy);
-gui.addColor(parameters, "outsideColor").onFinishChange(generateGalaxy); */
+gui.addColor(galaxies.yourOwn, "insideColor").onFinishChange(() => {
+  generateGalaxy(galaxies.yourOwn);
+});
+gui.addColor(galaxies.yourOwn, "outsideColor").onFinishChange(() => {
+  generateGalaxy(galaxies.yourOwn);
+});
 
 // sizes
 const sizes = {
@@ -228,16 +253,37 @@ const renderer = new THREE.WebGLRenderer({
 
 // axes
 // scene.add(new THREE.AxesHelper(20));
+const cameraVector = new THREE.Vector3();
+cameraVector.set(0.7, -1.37, 4.2);
 
-gui.add(camera.position, "z").min(0).max(10).step(0.001);
+generateGalaxy(galaxies.milkyWay);
+
+// galaxy controls
+galBtn.addEventListener("click", () => {
+  gsap.timeline({ duration: 1.4, ease: "power4.out" }).from(".webgl", {
+    opacity: 0,
+    onComplete: () => {
+      const header = document
+        .querySelector(".galaxy-description h1")
+        .innerHTML.toLowerCase();
+      if (header === "via lattea") {
+        generateGalaxy(galaxies.andromeda);
+      } else if (header === "gal. di andromeda") {
+        generateGalaxy(galaxies.backward);
+      } else {
+        generateGalaxy(galaxies.yourOwn);
+      }
+    },
+  });
+});
+
+/* gui.add(camera.position, "z").min(0).max(10).step(0.001);
 gui.add(camera.position, "y").min(0).max(10).step(0.001);
 gui.add(camera.position, "x").min(-10).max(10).step(0.001);
-const cameraVector = new THREE.Vector3();
 console.log(cameraVector);
-cameraVector.set(0.7, -1.37, 4.2);
 gui.add(cameraVector, "y").min(-10).max(10).step(0.001);
 gui.add(cameraVector, "x").min(-10).max(10).step(0.001);
-gui.add(cameraVector, "z").min(-10).max(10).step(0.001);
+gui.add(cameraVector, "z").min(-10).max(10).step(0.001); */
 
 // Controls
 // const controls = new OrbitControls(camera, canvas);
@@ -255,7 +301,7 @@ const tick = () => {
   // camera.position.x = Math.sin(elapsedTime) * 5;
   // camera.position.x = Math.cos(elapsedTime) * 10;
   // controls.update();
-  scene.children[0].rotation.y += 0.005;
+  scene.children.filter((el) => el.type === "Points")[0].rotation.y += 0.005;
   // Render
   renderer.render(scene, camera);
   window.requestAnimationFrame(tick);
