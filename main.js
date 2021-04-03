@@ -19,7 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const galParagraph = document.querySelector(".galaxy-description p");
   const galBtn = document.querySelector("#next-galaxy");
   const datGui = document.querySelector(".dg.ac");
-  // landing page animation
+  const countdownSound = document.querySelector("#button-sound");
+  const themeSound = document.querySelector("#theme-sound");
+  const ctaSound = document.querySelector("#countdown-song");
+
   gsap
     .timeline({ duration: 1, ease: "power4.out" })
     .from("h1 span", {
@@ -36,8 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const startCountdown = () => {
     let seconds = document.querySelector(".countdown span").textContent;
+    countdownSound.volume = 0.3;
     const countdownInterval = setInterval(() => {
       seconds--;
+      countdownSound.play();
       document.querySelector(".countdown span").textContent = seconds;
       if (seconds <= 0) {
         // countdown finished
@@ -55,12 +60,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const ctaButton = document.querySelector(".text-section .button");
   const textSection = document.querySelector(".text-section");
   ctaButton.addEventListener("click", () => {
+    themeSound.play();
+    ctaSound.play();
     textSection.classList.add("off-screen");
     countdown.classList.remove("invisible");
     startCountdown();
   });
 
   galBtn.addEventListener("click", () => {
+    ctaSound.play();
     gsap.timeline({ duration: 1.4, ease: "power4.out" }).from(galaxyDiv, {
       opacity: 0,
       onComplete: () => {
@@ -77,14 +85,9 @@ document.addEventListener("DOMContentLoaded", () => {
           galaxyDiv.classList.add("top-55");
           galHeader.innerHTML = "crea la tua galassia";
           galParagraph.innerHTML =
-            'Schiaccia sul bottone "controls" in alto a destra e prova a creare la tua galassia personalizzata!';
+            "Modifica i valori qui sopra e prova a creare la tua galassia personalizzata! Trascina il mouse per godertela da ogni sua prospettiva. Usa lo scroll per zoomare e trascina il mouse tenendo premuto il tasto destro per spostare la camera.";
         }
       },
     });
   });
-
-  // next galaxy function
-  const nextGalaxy = () => {
-    console.log();
-  };
 });

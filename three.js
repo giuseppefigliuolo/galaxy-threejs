@@ -7,7 +7,7 @@ const gui = new dat.GUI({ closed: false });
 //scene
 const scene = new THREE.Scene();
 
-// const OrbitControls = THREE.OrbitControls;
+const OrbitControls = THREE.OrbitControls;
 
 // Texture
 const textureLoader = new THREE.TextureLoader();
@@ -53,13 +53,13 @@ const galaxies = {
   yourOwn: {
     count: 40500,
     size: 0.024,
-    radius: 5.82,
-    branches: 5,
-    spin: -2.2,
-    randomness: 0.73,
+    radius: 4.74,
+    branches: 2,
+    spin: 1.15,
+    randomness: 0.75,
     randomnessPower: 4.6,
-    insideColor: "#d7d261",
-    outsideColor: "#785113",
+    insideColor: "#d9cf9c",
+    outsideColor: "#eb3e64",
   },
 };
 const galBtn = document.querySelector("#next-galaxy");
@@ -272,6 +272,9 @@ galBtn.addEventListener("click", () => {
         generateGalaxy(galaxies.backward);
       } else {
         generateGalaxy(galaxies.yourOwn);
+        // Controls
+        const controls = new OrbitControls(camera, canvas);
+        controls.enableDamping = true;
       }
     },
   });
@@ -284,10 +287,6 @@ console.log(cameraVector);
 gui.add(cameraVector, "y").min(-10).max(10).step(0.001);
 gui.add(cameraVector, "x").min(-10).max(10).step(0.001);
 gui.add(cameraVector, "z").min(-10).max(10).step(0.001); */
-
-// Controls
-// const controls = new OrbitControls(camera, canvas);
-// controls.enableDamping = true;
 
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
