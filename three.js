@@ -258,8 +258,11 @@ cameraVector.set(0.7, -1.37, 4.2);
 
 generateGalaxy(galaxies.milkyWay);
 
-// galaxy controls
-galBtn.addEventListener("click", () => {
+const galBtnHandler = () => {
+  galBtn.removeEventListener("click", galBtnHandler);
+  setTimeout(() => {
+    galBtn.addEventListener("click", galBtnHandler);
+  }, 2000);
   gsap.timeline({ duration: 1.4, ease: "power4.out" }).from(".webgl", {
     opacity: 0,
     onComplete: () => {
@@ -278,7 +281,10 @@ galBtn.addEventListener("click", () => {
       }
     },
   });
-});
+};
+
+// galaxy controls
+galBtn.addEventListener("click", galBtnHandler);
 
 /* gui.add(camera.position, "z").min(0).max(10).step(0.001);
 gui.add(camera.position, "y").min(0).max(10).step(0.001);

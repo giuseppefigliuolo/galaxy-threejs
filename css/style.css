@@ -1,8 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,200;0,300;0,600;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Spartan:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap");
 html {
   overflow: hidden;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Spartan", sans-serif;
 }
 
 body {
@@ -92,9 +92,15 @@ body {
 
 .subheader {
   margin: 2rem 0;
-  width: 50%;
+  width: 68%;
+  max-width: 850px;
+  line-height: 150%;
   font-weight: 200;
   align-self: center;
+}
+
+.subheader b {
+  color: #1ddab1;
 }
 
 .countdown {

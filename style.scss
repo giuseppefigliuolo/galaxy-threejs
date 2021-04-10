@@ -1,11 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,200;0,300;0,600;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Spartan:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap");
-
-$accent: rgb(29, 218, 177);
-
 html {
   overflow: hidden;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Spartan", sans-serif;
 }
 
 body {
@@ -34,7 +31,7 @@ body {
 }
 
 .accent {
-  color: rgb(29, 218, 177);
+  color: #1ddab1;
 }
 
 .of-hidden {
@@ -59,19 +56,21 @@ body {
   border-radius: 5px;
   font-size: 1.08rem;
   font-family: "Major Mono Display", monospace;
-  border: solid 2.5px $accent;
+  border: solid 2.5px #1ddab1;
   width: fit-content;
   align-self: center;
   cursor: pointer;
   transition: transform 0.2s ease-in;
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
-  &:hover {
-    transform: scale(1.01);
-    color: $accent;
-  }
+}
+
+.button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.button:hover {
+  transform: scale(1.01);
+  color: #1ddab1;
 }
 
 .text-section {
@@ -82,20 +81,26 @@ body {
   display: flex;
   flex-direction: column;
   z-index: 5;
+}
 
-  h1 {
-    width: 100%;
-    text-align: center;
-    padding-top: 10rem;
-    font-size: 2.4rem;
-  }
+.text-section h1 {
+  width: 100%;
+  text-align: center;
+  padding-top: 10rem;
+  font-size: 2.4rem;
 }
 
 .subheader {
   margin: 2rem 0;
-  width: 50%;
+  width: 68%;
+  max-width: 850px;
+  line-height: 150%;
   font-weight: 200;
   align-self: center;
+}
+
+.subheader b {
+  color: #1ddab1;
 }
 
 .countdown {
@@ -131,17 +136,17 @@ body {
   left: 5%;
   width: 41%;
   font-weight: 100;
-  // transition: opacity 0.8s ease-in;
-  p {
-    font-size: 0.85rem;
-    line-height: 160%;
-    width: 75%;
-    margin-top: 2.8rem;
-  }
+}
 
-  .button {
-    margin-top: 2rem;
-  }
+.galaxy-description p {
+  font-size: 0.85rem;
+  line-height: 160%;
+  width: 75%;
+  margin-top: 2.8rem;
+}
+
+.galaxy-description .button {
+  margin-top: 2rem;
 }
 
 .top-55 {
@@ -152,9 +157,10 @@ body {
   transition: opacity 0.8s ease-in;
   opacity: 0;
   z-index: 100;
-  .dg {
-    position: fixed !important;
-    top: 0 !important;
-    left: 50px !important;
-  }
+}
+
+.dg.ac .dg {
+  position: fixed !important;
+  top: 0 !important;
+  left: 50px !important;
 }

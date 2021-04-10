@@ -60,15 +60,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const ctaButton = document.querySelector(".text-section .button");
   const textSection = document.querySelector(".text-section");
   ctaButton.addEventListener("click", () => {
-    themeSound.play();
     ctaSound.play();
+    themeSound.play();
     textSection.classList.add("off-screen");
     countdown.classList.remove("invisible");
     startCountdown();
   });
 
-  galBtn.addEventListener("click", () => {
+  const galBtnHandler = () => {
     ctaSound.play();
+    galBtn.removeEventListener("click", galBtnHandler);
+    setTimeout(() => {
+      galBtn.addEventListener("click", galBtnHandler);
+    }, 2000);
     gsap.timeline({ duration: 1.4, ease: "power4.out" }).from(galaxyDiv, {
       opacity: 0,
       onComplete: () => {
@@ -89,5 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       },
     });
-  });
+  };
+
+  galBtn.addEventListener("click", galBtnHandler);
 });
